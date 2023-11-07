@@ -1,25 +1,29 @@
-// models/Comment.js
+// Comment.js in the models folder
+
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
 class Comment extends Model {}
 
+// Define the Comment model's fields and configuration
 Comment.init(
   {
-    // Define columns
+    // Define an ID column
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
       autoIncrement: true,
     },
+    // Define the comment text column
     comment_text: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1], // Comment must be at least one character long
+        len: [1] // Comment must be at least one character long
       },
     },
+    // Define the user_id column, which references the User model
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -28,6 +32,7 @@ Comment.init(
         key: 'id',
       },
     },
+    // Define the post_id column, which references the Post model
     post_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
