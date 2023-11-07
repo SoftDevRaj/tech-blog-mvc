@@ -1,19 +1,18 @@
+// models/User.js
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
 
-
 class User extends Model {
-  
+  // Check the entered password against the hashed password stored in the database
   checkPassword(loginPw) {
     return bcrypt.compareSync(loginPw, this.password);
   }
 }
 
-
 User.init(
   {
-    // TABLE COLUMN DEFINITIONS GO HERE
+    // Define columns
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -28,20 +27,17 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        // This means the password must be at least four characters long
-        len: [4],
+        len: [8], // Requires the password to be at least eight characters long
       },
     },
   },
   {
-    // TABLE CONFIGURATION OPTIONS GO HERE (https://sequelize.org/v5/manual/models-definition.html#configuration)
     hooks: {
-      // BeforeCreate lifecycle "hook" functionality
+      // Set up beforeCreate lifecycle "hook" functionality
       async beforeCreate(newUserData) {
         newUserData.password = await bcrypt.hash(newUserData.password, 10);
         return newUserData;
       },
-      // BeforeUpdate lifecycle "hook" functionality
       async beforeUpdate(updatedUserData) {
         updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
         return updatedUserData;
@@ -56,3 +52,4 @@ User.init(
 );
 
 module.exports = User;
+
