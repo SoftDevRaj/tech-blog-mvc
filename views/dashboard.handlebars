@@ -1,0 +1,41 @@
+{{!-- This file is dashboard.handlebars in the views folder --}}
+
+{{!-- Extend the main layout --}}
+{{extend 'main'}}
+
+{{!-- Additional head elements specific to the dashboard can be placed here --}}
+{{#block "head"}}
+<link rel="stylesheet" href="/css/dashboard.css">
+{{/block}}
+
+{{!-- Dashboard content --}}
+{{#block "content"}}
+<div class="container">
+    <h1 class="mb-4">Dashboard</h1>
+    <p>Welcome back, {{username}}!</p>
+
+    <div class="my-5">
+        <h2>Recent Posts</h2>
+        {{#if posts.length}}
+        <div class="list-group">
+            {{#each posts}}
+            <a href="/post/{{this.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{this.title}}</h5>
+                    <small>Posted on {{this.createdAt}}</small>
+                </div>
+                <p class="mb-1">{{this.summary}}</p>
+                <small class="text-muted">Comments: {{this.commentCount}}</small>
+            </a>
+            {{/each}}
+        </div>
+        {{else}}
+        <p>You have not created any posts yet. Would you like to <a href="/create-post">create one</a>?</p>
+        {{/if}}
+    </div>
+
+    <div class="my-5">
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+{{/block}}
